@@ -1,0 +1,23 @@
+# Modèles et données volumineux
+*.joblib
+*.pkl
+*.pickle
+*.h5
+*.csv
+
+# Environnement Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+.env
+.venv
+
+# Dossiers spécifiques
+.idea/
+.vscode/
+.DS_Store 
