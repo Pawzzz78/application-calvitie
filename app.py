@@ -11,6 +11,8 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
+import requests
+from io import StringIO
 
 app = Flask(__name__)
 
@@ -18,6 +20,28 @@ app = Flask(__name__)
 # Spécifier le répertoire des fichiers statiques (si nécessaire)
 if os.environ.get('RENDER'):
     app.config['STATIC_FOLDER'] = os.path.join(os.getcwd(), 'static')
+
+# URL du fichier CSV (remplacer par l'URL réelle de votre fichier)
+CSV_URL = "https://raw.githubusercontent.com/votre-nom-utilisateur/app-calvitie/main/bald_probability.csv"
+
+def telecharger_csv():
+    """
+    Télécharge le fichier CSV depuis GitHub ou une autre source
+    """
+    try:
+        print("Tentative de téléchargement du fichier CSV...")
+        response = requests.get(CSV_URL)
+        if response.status_code == 200:
+            with open("bald_probability.csv", "w", encoding="utf-8") as f:
+                f.write(response.text)
+            print("Fichier CSV téléchargé avec succès")
+            return True
+        else:
+            print(f"Erreur lors du téléchargement du CSV: {response.status_code}")
+            return False
+    except Exception as e:
+        print(f"Exception lors du téléchargement du CSV: {str(e)}")
+        return False
 
 def entrainer_modele(fichier_csv="bald_probability.csv", use_random_forest=True):
     """
@@ -205,8 +229,11 @@ def initier_modele():
     try:
         # Vérifier si on est sur Render
         if os.environ.get('RENDER'):
-            print("Déploiement sur Render détecté - Mode fallback activé si nécessaire")
-            return
+            print("Déploiement sur Render détecté")
+            # Si le fichier CSV n'existe pas, le télécharger
+            if not os.path.exists('bald_probability.csv'):
+                print("Fichier CSV non trouvé, tentative de téléchargement...")
+                telecharger_csv()
             
         # Si le fichier CSV existe, on peut entraîner le modèle
         if os.path.exists('bald_probability.csv'):
