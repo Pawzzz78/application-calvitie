@@ -3,7 +3,6 @@
 *.pkl
 *.pickle
 *.h5
-*.csv
 
 # Environnement Python
 __pycache__/
