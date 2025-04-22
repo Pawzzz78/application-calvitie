@@ -22,7 +22,7 @@ if os.environ.get('RENDER'):
     app.config['STATIC_FOLDER'] = os.path.join(os.getcwd(), 'static')
 
 # URL du fichier CSV (remplacer par l'URL réelle de votre fichier)
-CSV_URL = "https://raw.githubusercontent.com/votre-nom-utilisateur/app-calvitie/main/bald_probability.csv"
+CSV_URL = "https://raw.githubusercontent.com/Pawzzz78/application-calvitie/main/bald_probability.csv"
 
 def telecharger_csv():
     """
